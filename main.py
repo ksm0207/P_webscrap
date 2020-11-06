@@ -1,8 +1,6 @@
 import requests
 from bs4 import BeautifulSoup  # 데이터를 추출하기 위해 import
 
-spans = []
-
 
 # indeed html을 가져옵니다
 indeed = requests.get("https://www.indeed.com/jobs?q=python&limit=50")
@@ -15,13 +13,14 @@ pagination = indeed_soup.find("div", {"class": "pagination"})
 
 
 # find_all() 으로 모든 <a> 요소를 찾은다음 리스트[]로 반환합니다
-pages = pagination.find_all("a")
+links = pagination.find_all("a")
 
-
+pages = []
 # for 반복문 시작
-for page in pages:
-    spans.append(page.find("span"))
+for link in links[:-1]:
+    pages.append(int(link.string))
 
 
-span = spans[0:-1]
-print(span)
+max_page = pages[-1]
+
+print(max_page)
