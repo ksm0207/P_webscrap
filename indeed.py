@@ -39,7 +39,15 @@ def extract_indeed_jobs(last_pages):
     results = soup.find_all("div", {"class": "jobsearch-SerpJobCard"})
     for job_result in results:
         title = job_result.find("h2", {"class": "title"}).find("a")["title"]
-        print(title)
-
+        company = job_result.find("span", {"class": "company"})     # 회사이름 가져오기
+        company_anchor = company.find("a")  # Company 에서 soup 으로 부터 찾은 결과 저장
+        # 회사 이름에 <a> 없는곳이 있는지 체크해주기
+        if company_anchor is not None:
+            # 회사에 링크가 있다면 <a> String 출력
+            company = company_anchor.string.strip()  # strip() 공백제거
+            print(title, company)
+        else:
+            # 링크가 없으면 아래 것 을 출력
+            company = company.string.strip()
     return jobs
 
