@@ -6,7 +6,7 @@ LIMIT = 50
 URL = f"https://www.indeed.com/jobs?q=python&limit={LIMIT}"
 
 
-def extract_indeed_pages():
+def get_last_page():
     # indeed html을 가져옵니다
     indeed = requests.get(URL)
 
@@ -44,7 +44,6 @@ def extract_job(html):  # html = extract_indeed_jobs() result 인자를 받고 �
         # 링크가 없으면 아래 것 을 출력
         company = str(company.string)
     company = company.strip()
-    
     # 장소 가져오기
     location = html.find("div", {"class": "recJobLoc"})["data-rc-loc"]  # [data-rc-loc] 은 div 안에 있는 attribute 에 접근합니다
     # 페이지 지원링크 (id 값) 가져오기
@@ -64,5 +63,15 @@ def extract_indeed_jobs(last_pages):
             job = extract_job(result)
             # extract_job -->  company or title 결과를 배열로 저장합니다
             jobs.append(job)
+    return jobs
+
+
+# main.py --> indeed.py 합치기
+def get_jobs():
+    # 페이지의 가장 큰 숫자는 18을 나타냅니다
+    max_indeed_pages = get_last_page()
+    # 페이지의 가장 큰 숫자를 받아 18번동안 작동합니다
+    jobs = extract_indeed_jobs(max_indeed_pages)
+
     return jobs
 
