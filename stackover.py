@@ -11,6 +11,7 @@ def get_last_page():
     pagination = soup.find("div", {"class": "s-pagination"}).find_all("a")
     print(pagination)
 
+
 # 페이지를 가져옵니다 (번호 가져오기)
 def stack_get_jobs():
     last_page = get_last_page()
