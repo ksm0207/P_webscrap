@@ -36,14 +36,21 @@ def extract_job(html):  # html = extract_indeed_jobs() result 인자를 받고 �
     title = html.find("h2", {"class": "title"}).find("a")["title"]
     company = html.find("span", {"class": "company"})     # 회사이름 가져오기
     company_anchor = company.find("a")  # Company 에서 soup 으로 부터 찾은 결과 저장
+    
     # 회사 이름에 <a> 없는곳이 있는지 체크해주기
-    if company_anchor is not None:
-        # 회사에 링크가 있다면 <a> String 출력
-        company = str(company_anchor.string)  # strip() 공백제거
+    
+    if company:  # company attribute를 찾을수 없을때 찾아주는 조건문 추가 
+        company_anchor = company.find("a")  # 결과가 저장되지 않으면 실행되지 않음
+        if company_anchor is not None:
+            # 회사에 링크가 있다면 <a> String 출력
+            company = str(company_anchor.string)  # strip() 공백제거
+        else:
+            # 링크가 없으면 아래 것 을 출력
+            company = str(company.string)
+        company = company.strip()
     else:
-        # 링크가 없으면 아래 것 을 출력
-        company = str(company.string)
-    company = company.strip()
+        company = None
+
     # 장소 가져오기
     location = html.find("div", {"class": "recJobLoc"})["data-rc-loc"]  # [data-rc-loc] 은 div 안에 있는 attribute 에 접근합니다
     # 페이지 지원링크 (id 값) 가져오기
@@ -74,4 +81,3 @@ def get_jobs():
     jobs = extract_indeed_jobs(max_indeed_pages)
 
     return jobs
-
