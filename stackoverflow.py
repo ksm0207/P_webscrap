@@ -31,10 +31,10 @@ def extract_job(html):  # html 인자는 result 를 받음
     company, location = html.find("h3", {
         "class": "fc-black-700 fs-body1 mb4"
         }).find_all("span", recursive=False)  # recursive = 전부 가져오는것을 방지함
-     
-    print(company.get_text(strip=True).strip("-"), location.get_text(strip=True))
 
-    return {'title': title}
+    company = company.get_text(strip=True)
+    location = location.get_text(strip=True).strip("-")
+    return {'title': title, 'company': company, 'location': location}
 
 
 # job 출력하기 indeed.py extract_indeed_jobs() 참고
@@ -47,13 +47,13 @@ def extract_jobs(last_page):
         for result in results:
             job = extract_job(result)
             jobs.append(job)
+            print(jobs)
     return jobs
 
 
 def stack_get_jobs():
     last_page = get_last_page()  # 페이지 수 = 85개 request 요청해야함
     jobs = extract_jobs(last_page)
-
     return jobs
 
 
