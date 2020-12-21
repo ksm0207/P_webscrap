@@ -14,16 +14,29 @@ def get_last_page():
     result = requests.get(URL)
     soup = BeautifulSoup(result.text, "html.parser")
     pages = soup.find("div", {"class": "s-pagination"}).find_all("a")
-    print(pages)
+    last_page = pages[-2].get_text(strip=True)  # 마지막 페이지 숫자 가져오기 (next 제거)
+
+    # extract_jobs 의 인자는 정수형이고 range()는 Integer를 사용하므로 
+    # 형변환 시켜야함 현재는 string을 반환중
+    return int(last_page)
 
 
-# 페이지를 가져옵니다 (번호 가져오기)
+# job 출력하기 indeed.py extract_indeed_jobs() 참고
+def extract_jobs(last_page):
+    jobs = []
+    for page in range(last_page):
+        result = requests.get(f"{URL}&pg={page +1}")
+        soup = BeautifulSoup(result.text, "html.parser")
+        results = soup.find_all("div", {"class": "-job"})
+        for result in results:
+            print(result["data-jobid"])
+    return jobs
+
+
 def stack_get_jobs():
-    last_page = get_last_page()
-    
-    return []
+    last_page = get_last_page()  # 페이지 수 = 85개 request 요청해야함
+    jobs = extract_jobs(last_page)
 
-
-# job 출력하기
+    return jobs
 
 
