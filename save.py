@@ -3,7 +3,7 @@ import csv
 
 def save_to_file(jobs):
 
-    file = open("jobs.csv", mode="w", encoding="UTF-8")  # 파일 오픈
+    file = open("jobs.csv", mode="w", encoding="UTF-8", newline="")  # 파일 오픈
     # open() 함수를 사용할때 mode는 반드시 설정해줘야함
     # mode는  파일을 읽기형식 혹은 쓰기로 열수도있지만 w로 설정하면 쓰기로 설정한것
     

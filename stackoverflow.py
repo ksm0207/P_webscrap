@@ -15,7 +15,6 @@ def get_last_page():
     soup = BeautifulSoup(result.text, "html.parser")
     pages = soup.find("div", {"class": "s-pagination"}).find_all("a")
     last_page = pages[-2].get_text(strip=True)  # 마지막 페이지 숫자 가져오기 (next 제거)
-
     # extract_jobs 의 인자는 정수형이고 range()는 Integer를 사용하므로 
     # 형변환 시켜야함 현재는 string을 반환중
     return int(last_page)
