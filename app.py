@@ -1,6 +1,8 @@
 from flask import Flask
 from flask import render_template  # html파일을 메인으로 보내기
 from flask import request
+from flask import redirect
+from scrapper import stack_get_jobs
 
 
 app = Flask("SuperScrapper")  # 앱 이름 설정 / 는 root(웹사이트)를 의미함 google.com/ 구글루트 접속
@@ -17,10 +19,12 @@ def report():
         "location"  # 사용자가 어떤 검색어를 입력하는지 알수있게된다
     )
     if location:
-        if location is not None:
-            print("검색 결과 : True")
-        else:
-            print("검색 결과 : False")
+        location = location.lower()
+        ready = stack_get_jobs(location)  # Step 1 stack_get_jobs URL로부터 location을 받는다
+        print(ready)
+    else:
+        return redirect("/")  # /report 으로만 접속시 홈 으로 리다이렉트
+
     # search_by : 템플릿에 데이터를 넘길때 사용하는 변수 , 이를 렌더링 작업이라고 부름
     return render_template(template_name_or_list="report.html", search_by=location)
 
