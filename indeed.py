@@ -32,14 +32,14 @@ def get_last_page():
 
 
 def extract_job(html):  # html = extract_indeed_jobs() result 인자를 받고 정보를 추출합니다
-    # html 인자를 받고 extract_indeed_jobs 의 request 한 결과를 출력합니다 
+    # html 인자를 받고 extract_indeed_jobs 의 request 한 결과를 출력합니다
     title = html.find("h2", {"class": "title"}).find("a")["title"]
-    company = html.find("span", {"class": "company"})     # 회사이름 가져오기
+    company = html.find("span", {"class": "company"})  # 회사이름 가져오기
     company_anchor = company.find("a")  # Company 에서 soup 으로 부터 찾은 결과 저장
-    
+
     # 회사 이름에 <a> 없는곳이 있는지 체크해주기
-    
-    if company:  # company attribute를 찾을수 없을때 찾아주는 조건문 추가 
+
+    if company:  # company attribute를 찾을수 없을때 찾아주는 조건문 추가
         company_anchor = company.find("a")  # 결과가 저장되지 않으면 실행되지 않음
         if company_anchor is not None:
             # 회사에 링크가 있다면 <a> String 출력
@@ -52,14 +52,21 @@ def extract_job(html):  # html = extract_indeed_jobs() result 인자를 받고 �
         company = None
 
     # 장소 가져오기
-    location = html.find("div", {"class": "recJobLoc"})["data-rc-loc"]  # [data-rc-loc] 은 div 안에 있는 attribute 에 접근합니다
+    location = html.find("div", {"class": "recJobLoc"})[
+        "data-rc-loc"
+    ]  # [data-rc-loc] 은 div 안에 있는 attribute 에 접근합니다
     # 페이지 지원링크 (id 값) 가져오기
     job_id = html["data-jk"]
-    return {'title': title, 'company': company, 'location': location, 'link': f"https://www.indeed.com/viewjob?jk{job_id}"}
+    return {
+        "title": title,
+        "company": company,
+        "location": location,
+        "link": f"https://www.indeed.com/viewjob?jk{job_id}",
+    }
 
 
 def extract_indeed_jobs(last_pages):
-    jobs = []   # extract_job() 함수로 부터 반환된 값을 배열에 넣습니다
+    jobs = []  # extract_job() 함수로 부터 반환된 값을 배열에 넣습니다
     for page in range(last_pages):  # last_page = 18
         print(f"스크랩핑 페이지 수 : {page}")
         result = requests.get(f"{URL}&start={page*LIMIT}")
