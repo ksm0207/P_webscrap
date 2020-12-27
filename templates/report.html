@@ -20,6 +20,7 @@
 <body>
     <h1>Search Result : {{search_by}}</h1>  
     <h3>Found :  {{results_number}} results for : {{search_by}} </h3>
+    <a href="/export?location={{search_by}}">Export to CSV</a>
     {% for i in jobs  %}
         <section>
             <h4>Title</h4>

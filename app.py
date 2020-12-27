@@ -39,6 +39,25 @@ def report():
     )
 
 
+# URL 에서 넘어온 단어를 보내기 및 체크
+@app.route("/export")
+def export():
+    try:
+        location = request.args.get("location")
+        if not location:  # location 이 존재하지 않으면 raise 발생
+            print("값이 제대로 전달되지 않았습니다")
+            raise Exception()
+        location = location.lower()
+        jobs = db.get(location)
+        if not jobs:  # jobs 가 존재하지 않으면 예외발생
+            print("Do not exist DB")
+            raise Exception()
+        return f"CSV for {location}"  # 존재하면 csv for location 리턴
+    except Exception as e:
+        print(e)
+        return redirect("/")  # 값이 None일때 리다이렉트
+
+
 # Python은 @를 찾아 어떤 접속요청이 들어오면 실행
 # @ : 데코레이터 라고 부르며 아래에 있는 함수를 찾아 실행함
 # @app.route("/<username>")  # /about 접속시 함수 실행 <> 부분은 placeholder
