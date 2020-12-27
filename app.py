@@ -35,6 +35,7 @@ def report():
         template_name_or_list="report.html",
         search_by=location,
         results_number=len(get_ready),
+        jobs=get_ready,
     )
 
 

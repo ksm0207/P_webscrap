@@ -3,12 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Jobs</title>
+    <style>
+        section{
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(4,1fr);
+            color: teal;
+        }
+        section a{
+            text-decoration: none;
+            color: teal;
+        }
+    </style>
 </head>
 <body>
     <h1>Search Result : {{search_by}}</h1>  
     <h3>Found :  {{results_number}} results for : {{search_by}} </h3>
-
+    {% for i in jobs  %}
+        <section>
+            <h4>Title</h4>
+            <h4>Company</h4>
+            <h4>Location</h4>
+            <h4>Link</h4>
+            {% for i in jobs  %}
+                <span>{{i.title}}</span>
+                <span>{{i.company}}</span>
+                <span>{{i.location}}</span>
+                <a href="{{i.link}}" target="_blank">Apply</a>
+            {% endfor %}
+        </section>      
+    {% endfor %}
+    
     
 </body>
 </html>
