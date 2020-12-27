@@ -2,7 +2,9 @@ from flask import Flask
 from flask import render_template  # html파일을 메인으로 보내기
 from flask import request
 from flask import redirect
+from flask import send_file
 from scrapper import stack_get_jobs
+from exporter import save_to_file
 
 app = Flask(__name__)
 
@@ -44,15 +46,16 @@ def report():
 def export():
     try:
         location = request.args.get("location")
-        if not location:  # location 이 존재하지 않으면 raise 발생
+        if not location:  # location 에 해당하는 jobs 값이 존재하지 않으면 raise 발생
             print("값이 제대로 전달되지 않았습니다")
             raise Exception()
         location = location.lower()
-        jobs = db.get(location)
+        jobs = db.get(location)  # location 으로 jobs를 Fake DB에서 찾음
         if not jobs:  # jobs 가 존재하지 않으면 예외발생
             print("Do not exist DB")
             raise Exception()
-        return f"CSV for {location}"  # 존재하면 csv for location 리턴
+        save_to_file(jobs)  # 존재하면 csv 파일 저장
+        return send_file("jobs.csv", as_attachment=True)
     except Exception as e:
         print(e)
         return redirect("/")  # 값이 None일때 리다이렉트
