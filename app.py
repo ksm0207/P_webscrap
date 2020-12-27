@@ -3,7 +3,7 @@ from flask import render_template  # html파일을 메인으로 보내기
 from flask import request
 from flask import redirect
 from flask import send_file
-from scrapper import stack_get_jobs
+from scrapper import stack_get_jobs, get_jobs
 from exporter import save_to_file
 
 app = Flask(__name__)
@@ -28,6 +28,7 @@ def report():
             get_ready = from_db
         else:  # Step 1 stack_get_jobs URL로부터 location을 받는다
             get_ready = stack_get_jobs(location)  # location 값이 None 이면 찾기위한 크롤링 시작
+            get_ready = get_jobs(location)
             db[location] = get_ready  # 크롤링 종료후 데이터 저장
     else:
         return redirect("/")  # /report 으로만 접속시 홈 으로 리다이렉트
